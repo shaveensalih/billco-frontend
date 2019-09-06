@@ -2,13 +2,13 @@
   <div>
     <base-header type="gradient-success" class="pb-6 pb-8 pt-5 pt-md-8">
 
+
     </base-header>
 
     <!--Charts-->
+
     <div class="container-fluid mt--7">
-      <div class="row">
-
-
+      <!-- <div class="row">
         <div class="col-xl-6">
           <card header-classes="bg-transparent">
             <div slot="header" class="row align-items-center">
@@ -34,7 +34,7 @@
             <bar-chart :height="350" ref="barChart" :chart-data="redBarChart.chartData"></bar-chart>
           </card>
         </div>
-      </div>
+      </div> -->
       <!-- End charts-->
 
       <!--Tables-->

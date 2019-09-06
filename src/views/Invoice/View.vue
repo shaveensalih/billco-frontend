@@ -32,22 +32,16 @@
             </div>
           </div>
         </div>
-      </div>-->
+      </div> -->
 
       <div class="row">
         <div class="col">
           <card shadow type="secondary">
             <div slot="header" class="bg-white border-0">
               <div class="row align-items-center">
-                <div class="col-8 d-flex align-items-center">
-                  <h3 class="mb-0 mr-3">Send To</h3>
-                  <base-dropdown v-model="test">
-                    <base-button slot="title" type="secondary" class="dropdown-toggle">ABC</base-button>
-                    <a class="dropdown-item" href="#">Example Co.</a>
-                    <a class="dropdown-item" href="#">InnerG</a>
-                  </base-dropdown>
+                <div class="col-8">
+                  <h3 class="mb-0">New Invoice</h3>
                 </div>
-                <p>{{test}}</p>
                 <div class="col-4 text-right">
                   <a href="#!" class="btn btn-sm btn-primary">Send Invoice</a>
                 </div>
@@ -55,8 +49,19 @@
             </div>
             <template>
               <form @submit.prevent>
-                <h6 class="heading-small text-muted mb-4">Header</h6>
+                <h6 class="heading-small text-muted mb-4">Bill To</h6>
                 <div class="pl-lg-4">
+                  <div class="row">
+                    <div class="col-lg-4">
+                      <base-dropdown>
+                        <base-button slot="title" type="secondary" class="dropdown-toggle">Regular</base-button>
+                        <a class="dropdown-item" href="#">Action</a>
+                        <a class="dropdown-item" href="#">Another action</a>
+                        <a class="dropdown-item" href="#">Something else here</a>
+                      </base-dropdown>
+                    </div>
+                  </div>
+
                   <div class="row mt-4">
                     <base-input label="Date" class="col-lg-4">
                       <flat-picker
@@ -65,7 +70,7 @@
                         @on-close="blur"
                         :config="{allowInput: true}"
                         class="form-control datepicker"
-                        v-model="model.dateQuoted"
+                        v-model="dates.simple"
                       ></flat-picker>
                     </base-input>
 
@@ -76,7 +81,7 @@
                         @on-close="blur"
                         :config="{allowInput: true}"
                         class="form-control datepicker"
-                        v-model="model.dateDue"
+                        v-model="dates.simple"
                       ></flat-picker>
                     </base-input>
 
@@ -90,73 +95,35 @@
                       />
                     </div>
                   </div>
-                </div>
-                <hr class="my-4" />
 
-                <h6 class="heading-small text-muted mb-4">Totals</h6>
-                <div class="pl-lg-4">
-                  <div class="row">
-                    <div class="col">
-                      <base-input
-                        alternative
-                        label="Subtotal"
-                        readonly
-                        input-classes="form-control-alternative"
-                        :value="subtotal"
-                      />
-                    </div>
+                  <div class="row mt-4 ml-2">
+                      <h4>Balance Due</h4>
 
-                    <div class="col">
-                      <base-input
-                        alternative
-                        label="Discount"
-                        placeholder="5%"
-                        input-classes="form-control-alternative"
-                        v-model="model.discount"
-                      />
-                    </div>
+                    <!-- Enter Calculation -->
 
-                    <div class="col">
-                      <base-input
-                        alternative
-                        label="Total"
-                        readonly
-                        input-classes="form-control-alternative"
-                        :value="total"
-                      />
-                    </div>
-
-                    <div class="col">
-                      <base-input
-                        alternative
-                        label="Amount Paid"
-                        readonly
-                        input-classes="form-control-alternative"
-                        v-model="model.city"
-                      />
-                    </div>
-
-                    <div class="col">
-                      <base-input
-                        alternative
-                        label="Balance Due"
-                        readonly
-                        input-classes="form-control-alternative"
-                        v-model="model.city"
-                      />
-                    </div>
                   </div>
                 </div>
                 <hr class="my-4" />
                 <!-- Address -->
-                <h6 class="heading-small text-muted mb-4">Lines</h6>
+                <h6 class="heading-small text-muted mb-4">Add Products</h6>
                 <div class="pl-lg-4">
+                  <!-- <div class="row">
+                    <div class="col-md-12">
+                      <base-input
+                        alternative
+                        label="Address"
+                        placeholder="Home Address"
+                        input-classes="form-control-alternative"
+                        v-model="model.address"
+                      />
+                    </div>
+                  </div>-->
                   <div class="row">
-                    <div class="col-lg-5">
+                    <div class="col-lg-6">
                       <base-input
                         alternative
                         label="Description"
-                        placeholder="Pen"
+                        placeholder="Description"
                         input-classes="form-control-alternative"
                         v-model="model.city"
                       />
@@ -165,48 +132,7 @@
                       <base-input
                         alternative
                         label="Quantity"
-                        placeholder="2.0"
-                        input-classes="form-control-alternative"
-                        v-model="line.quantity"
-                      />
-                    </div>
-                    <div class="col-lg-2">
-                      <base-input
-                        alternative
-                        label="Unit Price"
-                        placeholder="0.5"
-                        input-classes="form-control-alternative"
-                        v-model="line.price"
-                      />
-                    </div>
-                    <div class="col-lg-2">
-                      <base-input
-                        alternative
-                        label="Total"
-                        readonly
-                        placeholder="1.0"
-                        input-classes="form-control-alternative"
-                        :value="line.quantity * line.price"
-                      />
-                    </div>
-                    <div class="col d-flex flex-column justify-content-center">
-                      <base-button type="primary" icon="ni ni-fat-add" @click="addLine"></base-button>
-                    </div>
-                  </div>
-
-                  <div class="row" v-for="(line, i) in model.lines" :key="i">
-                    <div class="col-lg-5">
-                      <base-input
-                        alternative
-                        placeholder="Pen"
-                        input-classes="form-control-alternative"
-                        v-model="model.city"
-                      />
-                    </div>
-                    <div class="col-lg-2">
-                      <base-input
-                        alternative
-                        placeholder="2.0"
+                        placeholder="Qty"
                         input-classes="form-control-alternative"
                         v-model="model.country"
                       />
@@ -214,28 +140,61 @@
                     <div class="col-lg-2">
                       <base-input
                         alternative
-                        placeholder="0.5"
+                        label="Unit Price"
+                        placeholder="Unit Price"
                         input-classes="form-control-alternative"
                         v-model="model.zipCode"
                       />
                     </div>
-                    <div class="col-lg-2">
+
+                    <!-- <div class="col-lg-2">
+
                       <base-input
                         alternative
-                        readonly
-                        placeholder="1.0"
+                        label="Postal code"
+                        placeholder="Postal code"
                         input-classes="form-control-alternative"
                         v-model="model.zipCode"
                       />
-                    </div>
-                    <div class="col d-flex flex-column justify-content-start">
-                      <base-button type="danger" icon="ni ni-fat-delete" @click="removeLine(i)"></base-button>
-                    </div>
+                    </div>-->
                   </div>
+
+                  <base-button type="primary" icon="ni ni-fat-add"></base-button>
+                </div>
+                <hr class="my-4" />
+
+                <div class="row ml-4">
+                    <h4>Subtotal</h4>
+                </div>
+
+
+                <div class="row ml-4">
+                    <base-input
+                        alternative
+                        label="Discount (%)"
+                        placeholder="Discount"
+                        input-classes="form-control-alternative"
+                        v-model="model.zipCode"
+                      />
+                </div>
+
+                <div class="row ml-4">
+                    <h4>Total</h4>
+                </div>
+
+                <div class="row ml-4">
+
+                    <base-input
+                        alternative
+                        label="Amount Paid"
+                        placeholder="Amount Paid"
+                        input-classes="form-control-alternative"
+                        v-model="model.zipCode"
+                      />
                 </div>
                 <hr class="my-4" />
                 <!-- Description -->
-                <h6 class="heading-small text-muted mb-4">Notes</h6>
+                <h6 class="heading-small text-muted mb-4">Extra Notes</h6>
                 <div class="pl-lg-4">
                   <div class="form-group">
                     <base-input alternative label="Notes">
@@ -263,10 +222,10 @@
             </template>
 
             <template slot="footer" class="bg-white border-0">
-              <div class="row align-items-center">
-                <div class="col-12 text-center">
-                  <a href="#!" class="btn btn-lg btn-primary">Send Invoice</a>
-                </div>
+                <div class="row align-items-center">
+                    <div class="col-12 text-center">
+                    <a href="#!" class="btn btn-lg btn-primary">Send Invoice</a>
+                    </div>
               </div>
             </template>
           </card>
@@ -282,47 +241,25 @@ export default {
   components: {
     flatPicker
   },
+  name: "user-profile",
   data() {
     return {
-      test: "",
-      line: {
-        description: null,
-        quantity: null,
-        price: null
-      },
       model: {
-        // dates
-        dateQuoted: new Date().toISOString(),
-        dateDue: new Date().toISOString(),
-        // notes
-        paymentTerms: "",
-        notes: "",
-        terms: "",
-        // header
-        discount: "",
-        // lines
-        lines: []
+        username: "",
+        email: "",
+        firstName: "",
+        lastName: "",
+        address: "",
+        city: "",
+        country: "",
+        zipCode: "",
+        about: ""
+      },
+
+      dates: {
+        simple: "2018-07-17"
       }
     };
-  },
-  methods: {
-    addLine() {
-      this.model.lines.push(this.line);
-    },
-    removeLine(i) {
-      this.model.lines.splice(i);
-    }
-  },
-  computed: {
-    subtotal() {
-      return this.model.lines.reduce(
-        (acc, val) => acc + val.quantity * val.price,
-        0
-      );
-    },
-    total() {
-      return this.subtotal - this.model.discount;
-    }
   }
 };
 </script>
